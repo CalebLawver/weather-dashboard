@@ -1,0 +1,1 @@
+var apiKey = "http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=1102146e44da3e97c0e180cac7f33405"
