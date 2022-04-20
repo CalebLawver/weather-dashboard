@@ -9,6 +9,7 @@ let tempCity = document.querySelector("#temp1");
 let windCity = document.querySelector("#wind1");
 let humidCity = document.querySelector("#humid1");
 let uvCity = document.querySelector("#uv");
+let forecastContainer = document.querySelector("#five-day-forecast");
 
 $("#date").text(moment().format('l'));
 
@@ -75,11 +76,53 @@ var currentConditions = function(weather, city) {
             }
         });
     });
-    dayForecast(weather, city);
+    dayForecast(city);
 }
 
-var dayForecast = function(weather, city) {
+var dayForecast = function(city) {
+    let forecastUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + city + "&units=imperial&appid=1102146e44da3e97c0e180cac7f33405";
+    fetch(forecastUrl)
+    .then(function(response) {
+        response.json().then(function(forecast) {
+            console.log(forecast);
 
+            for(var i = 0; i < forecast.list.length; i++) {
+                let dayList = forecast.list[i];
+                let dayTimeUTC = dayList.dt;
+                let timeZoneOffset = forecast.city.timezone;
+                let timeZoneOffsetHours = timeZoneOffset/60/60;
+                let dayMoment = moment.unix(dayTimeUTC).utc().utcOffset(timeZoneOffsetHours);
+                // let iconUrl = "https://openweathermap.org/img/w/" + dayList.weather[0].icon + ".png";
+
+                if (dayMoment.format("HH:mm:ss") >= "10:00:00" && dayMoment.format("HH:mm:ss") <= "14:00:00") {
+                    var containerEl = document.createElement("div");
+                    containerEl.classList = "card bg-primary col-2";
+
+                    var dateEl = document.createElement("h4");
+                    dateEl.classList = "card-header fw-bold text-light";
+                    dateEl.textContent = dayMoment.format("MM/DD/YYYY");
+
+                    var tempP = document.createElement("p");
+                    tempP.classList = "fs-5 fw-normal text-light"
+                    tempP.textContent = "Temp: " + dayList.main.temp + "&#8457";
+
+                    var windP = document.createElement("p");
+                    windP.classList = "fs-5 fw-normal text-light";
+                    windP.textContent = "Wind: " + dayList.wind.speed + " MPH";
+
+                    var humidP = document.createElement("p");
+                    humidP.classList = "fs-5 fw-normal text-light";
+                    humidP.textContent = "Humidity: " + dayList.main.humidity + "%";
+
+                    forecastContainer.appendChild(containerEl);
+                    containerEl.appendChild(dateEl);
+                    containerEl.appendChild(tempP);
+                    containerEl.appendChild(windP);
+                    containerEl.appendChild(humidP);
+                }
+            }
+        });
+    });
 }
 
 searchedCity.addEventListener("submit", formSubmitHandler);
