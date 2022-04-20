@@ -20,7 +20,7 @@ var formSubmitHandler = function(event) {
 };
 
 var citiesConditions = function(city) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=1102146e44da3e97c0e180cac7f33405";
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=logan&units=imperial&appid=1102146e44da3e97c0e180cac7f33405";
 
     fetch(apiUrl)
         .then(function(response) {
@@ -38,5 +38,9 @@ var citiesConditions = function(city) {
             alert("Unable to connect to weather service");
         });
 };
+
+var currentConditions = function() {
+
+}
 
 searchedCity.addEventListener("submit", formSubmitHandler);
