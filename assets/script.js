@@ -104,7 +104,7 @@ var dayForecast = function(city) {
 
                     var tempP = document.createElement("p");
                     tempP.classList = "fs-5 fw-normal text-light"
-                    tempP.textContent = "Temp: " + dayList.main.temp + "&#8457";
+                    tempP.textContent = "Temp: " + dayList.main.temp + "&#8457" + "F";
 
                     var windP = document.createElement("p");
                     windP.classList = "fs-5 fw-normal text-light";
