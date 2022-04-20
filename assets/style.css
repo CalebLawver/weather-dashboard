@@ -1,0 +1,17 @@
+.uv-good {
+    background-color: green;
+    border-radius: 5px;
+    color: white;
+}
+
+.uv-mid {
+    background-color: orange;
+    border-radius: 5px;
+    color: white;    
+}
+
+.uv-bad {
+    background-color: red;
+    border-radius: 5px;
+    color: white;    
+}

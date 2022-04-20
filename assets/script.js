@@ -54,10 +54,32 @@ var currentConditions = function(weather, city) {
     $(humidCity).text(weather.main.humidity);
 
     // getting weather icon to appear
-    var currentIcon = document.createElement("img");
-    currentIcon.src = currentWeatherIcon;
-    var src = document.getElementById("#date");
-    src.appendChild(currentIcon);
+    // var currentIcon = document.createElement("img");
+    // currentIcon.src = currentWeatherIcon;
+    // var src = document.getElementById("#date");
+    // src.appendChild(currentIcon);
+
+    let lat = weather.coord.lat;
+    let lon = weather.coord.lon;
+    let uvUrl = "https://api.openweathermap.org/data/2.5/uvi?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=1102146e44da3e97c0e180cac7f33405";
+
+    fetch(uvUrl).then(function(response) {
+        response.json().then(function(uvData) {
+            $(uvCity).text(uvData.value);
+            if (uvData.value >= 0 && uvData.value < 3) {
+                $(uvCity).attr("class", "p-2 uv-good");
+            } else if (uvData.value >=3 && uvData.value < 8) {
+                $(uvCity).attr("class", "p-2 uv-mid");
+            } else {
+                $(uvCity).attr("class", "p-2 uv-bad");
+            }
+        });
+    });
+    dayForecast(weather, city);
+}
+
+var dayForecast = function(weather, city) {
+
 }
 
 searchedCity.addEventListener("submit", formSubmitHandler);
