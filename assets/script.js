@@ -126,6 +126,7 @@ var dayForecast = function(city) {
     });
 }
 
+
 var resetForecast = function() {
     var child = forecastContainer.lastElementChild 
     while (child) {
