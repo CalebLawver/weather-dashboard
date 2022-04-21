@@ -16,11 +16,11 @@ $("#date").text(moment().format('l'));
 var formSubmitHandler = function(event) {
     event.preventDefault();
 
-    // IM STUCK HERE
     var enteredCity = cityNameInput.value.trim();
 
     if (enteredCity) {
         citiesConditions(enteredCity);
+        resetForecast();
     } else {
         alert("Please enter a City.");
     }
@@ -94,7 +94,8 @@ var dayForecast = function(city) {
                 let dayMoment = moment.unix(dayTimeUTC).utc().utcOffset(timeZoneOffsetHours);
                 // let iconUrl = "https://openweathermap.org/img/w/" + dayList.weather[0].icon + ".png";
 
-                if (dayMoment.format("HH:mm:ss") >= "10:00:00" && dayMoment.format("HH:mm:ss") <= "14:00:00") {
+                if (dayMoment.format("HH:mm:ss") >= "11:00:00" && dayMoment.format("HH:mm:ss") <= "13:00:00") {
+
                     var containerEl = document.createElement("div");
                     containerEl.classList = "card bg-primary col-2";
 
@@ -104,7 +105,7 @@ var dayForecast = function(city) {
 
                     var tempP = document.createElement("p");
                     tempP.classList = "fs-5 fw-normal text-light"
-                    tempP.textContent = "Temp: " + dayList.main.temp + "&#8457" + "F";
+                    tempP.innerHTML = "Temp: " + dayList.main.temp + "&#8457";
 
                     var windP = document.createElement("p");
                     windP.classList = "fs-5 fw-normal text-light";
@@ -125,4 +126,13 @@ var dayForecast = function(city) {
     });
 }
 
-searchedCity.addEventListener("submit", formSubmitHandler);
+var resetForecast = function() {
+    var child = forecastContainer.lastElementChild 
+    while (child) {
+        forecastContainer.removeChild(child);
+        child = forecastContainer.lastElementChild
+    }
+    
+}
+
+searchedCity.addEventListener("submit", formSubmitHandler, resetForecast);
