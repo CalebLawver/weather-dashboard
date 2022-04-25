@@ -10,6 +10,8 @@ let windCity = document.querySelector("#wind1");
 let humidCity = document.querySelector("#humid1");
 let uvCity = document.querySelector("#uv");
 let forecastContainer = document.querySelector("#five-day-forecast");
+var currentCity = "";
+var pastCity = "";
 
 $("#date").text(moment().format('l'));
 
@@ -100,7 +102,7 @@ var dayForecast = function(city) {
                     containerEl.classList = "card bg-primary col-2";
 
                     var dateEl = document.createElement("h4");
-                    dateEl.classList = "card-header fw-bold text-light";
+                    dateEl.classList = "card-header fw-bold text-light fs-5";
                     dateEl.textContent = dayMoment.format("MM/DD/YYYY");
 
                     var tempP = document.createElement("p");
@@ -133,7 +135,50 @@ var resetForecast = function() {
         forecastContainer.removeChild(child);
         child = forecastContainer.lastElementChild
     }
-    
+}
+
+var showCities = function() {
+    $('#city-list').empty();
+    if (localStorage.length === 0) {
+        if (pastCity) {
+            $('#city').attr("value", pastCity);
+        } else {
+            $('#city').attr("value", "Chicago");
+        }
+    } else {
+        let pastCityList = "cities" + (localStorage.length - 1);
+        pastCity = localStorage.getItem(pastCityList);
+
+        $('#city').attr("value", pastCity);
+
+        for (let i = 0; i < localStorage.length; i++) {
+            let cityNameInput = localStorage.getItem("cities" + i);
+            let listCityEl;
+
+            if (currentCity === "") {
+                currentCity = pastCity;
+            }
+
+            if (cityNameInput === currentCity) {
+                listCityEl = `<button type="button" class="list-group-item list-group-item-action active">${city}</button></li>`;
+            } else {
+                listCityEl = `<button type="button" class="list-group-item list-group-item-action">${city}</button></li>`;
+            }
+            $('#city-list').prepend(listCityEl);
+        } 
+        if (localStorage.length > 0) {
+            $('#clear-btn').html($('<a id="clear-btn" href="#">clear</a>'));
+        } else {
+            $('#clear-storage').html('');
+        }
+    }
 }
 
 searchedCity.addEventListener("submit", formSubmitHandler, resetForecast);
+
+$('#city-list').on("click", showCities);
+
+$("#clear-btn").on("click", showCities);
+
+showCities();
+
