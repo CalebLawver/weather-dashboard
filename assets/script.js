@@ -155,7 +155,6 @@ var showCities = function() {
 
     if (localStorage.length === 0) {
         if (pastCity) {
-
             $('#city').attr("value", pastCity);
         } else {
             $('#city').attr("value", "Chicago");
@@ -175,9 +174,19 @@ var showCities = function() {
             }
 
             if (cityNameInput === currentCity) {
-                listCityEl = `<button type="button" class="list-group-item list-group-item-action active">${cityNameInput}</button></li>`;
+                listCityEl = document.createElement("li");
+                cityButton = document.createElement("button")
+                cityButton.innerHTML = cityNameInput;
+                cityButton.classList = "list-group-item list-group-item-action active";
+                cityButton.type = "submit";
+
+                listCityEl.appendChild(cityButton);
             } else {
-                listCityEl = `<button type="button" class="list-group-item list-group-item-action">${cityNameInput}</button></li>`;
+                listCityEl = document.createElement("li");
+                cityButton = document.createElement("button")
+                cityButton.innerHTML = "Chicago";
+                cityButton.classList = "list-group-item list-group-item-action active";
+                cityButton.type = "submit";
             }
             $('#city-list').prepend(listCityEl);
         } 
