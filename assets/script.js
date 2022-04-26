@@ -23,6 +23,7 @@ var formSubmitHandler = function(event) {
     if (enteredCity) {
         citiesConditions(enteredCity);
         resetForecast();
+        showCities();
     } else {
         alert("Please enter a City.");
     }
@@ -137,10 +138,24 @@ var resetForecast = function() {
     }
 }
 
+var saveCity = function(typedCity) {
+    let cityEntered = false;
+    for (let i = 0; localStorage.length; i++) {
+        if (localStorage["cities" + i] === typedCity) {
+            cityEntered = true;
+            break;
+        }
+    }
+    if (cityEntered === false) {
+        localStorage.setItem('cities' + localStorage.length, typedCity);
+    }
+}
+
 var showCities = function() {
-    $('#city-list').empty();
+
     if (localStorage.length === 0) {
         if (pastCity) {
+
             $('#city').attr("value", pastCity);
         } else {
             $('#city').attr("value", "Chicago");
@@ -153,16 +168,16 @@ var showCities = function() {
 
         for (let i = 0; i < localStorage.length; i++) {
             let cityNameInput = localStorage.getItem("cities" + i);
-            let listCityEl;
+            let listCityEl = "";
 
             if (currentCity === "") {
                 currentCity = pastCity;
             }
 
             if (cityNameInput === currentCity) {
-                listCityEl = `<button type="button" class="list-group-item list-group-item-action active">${city}</button></li>`;
+                listCityEl = `<button type="button" class="list-group-item list-group-item-action active">${cityNameInput}</button></li>`;
             } else {
-                listCityEl = `<button type="button" class="list-group-item list-group-item-action">${city}</button></li>`;
+                listCityEl = `<button type="button" class="list-group-item list-group-item-action">${cityNameInput}</button></li>`;
             }
             $('#city-list').prepend(listCityEl);
         } 
@@ -181,4 +196,5 @@ $('#city-list').on("click", showCities);
 $("#clear-btn").on("click", showCities);
 
 showCities();
+
 
